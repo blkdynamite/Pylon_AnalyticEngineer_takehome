@@ -292,21 +292,7 @@ Computes two composite scores:
 **Use Case:** Identify which healthy, growing accounts are best positioned for marketing/sales enablement (case studies, testimonials, advisory boards).
 
 ---
-
-## 4. Self-Serve Dashboard: Pylon CS Dashboard
-
-The core visualization is the **ARR vs. AI Adoption Score Scatter Plot**, which segments customers into actionable groups:
-
-- **Target:** High ARR + High AI Adoption (expand, reference-ready)
-- **Risk:** High ARR + Low AI Adoption (intervention needed)
-- **Quick Wins:** Low ARR + High AI Adoption (upsell seats/features)
-- **Monitor:** Low ARR + Low AI Adoption (onboarding support)
-
-Dashboard provides CS/PM immediate access to high-value insights without needing a data analyst for every question.
-
----
-
-## 5. Implementation Notes
+## 4. Implementation Notes
 
 ### Data Quality Validation
 

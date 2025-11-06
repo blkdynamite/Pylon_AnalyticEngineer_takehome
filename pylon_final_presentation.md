@@ -6,16 +6,6 @@
 
 ---
 
-### What's Included
-
-- **Core Mart:** fct_org_daily_activity (one row per org per day)
-- **Derived Metrics:** AI adoption and reference readiness scoring
-- **Self-Serve Dashboard:** Interactive React component for CS/PM
-- **SQL Implementation:** Production-ready dbt models with tests
-- **Implementation Roadmap:** 8-week phased deployment plan
-
----
-
 ## 1. Mart Architecture & Methodology
 
 ### Core Deliverable: fct_org_daily_activity

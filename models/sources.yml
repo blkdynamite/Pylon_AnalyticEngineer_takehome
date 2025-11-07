@@ -1,0 +1,63 @@
+version: 2
+
+sources:
+  - name: airbyte
+    description: "Raw data synced from Pylon via Airbyte"
+    database: ANALYTICS_DB
+    schema: RAW_AIRBYTE
+    tables:
+      - name: PRODUCT_EVENTS
+        description: "Raw product event stream"
+        columns:
+          - name: uuid
+            description: "Unique event identifier"
+          - name: event
+            description: "Event name (e.g., issue:click, ai_response:generated)"
+          - name: distinct_id
+            description: "User ID or org ID (prefixed with 'org-')"
+          - name: timestamp
+            description: "Event timestamp"
+          - name: properties
+            description: "Event properties (JSON)"
+          - name: team_id
+            description: "Team identifier"
+      
+      - name: PYLON_USERS
+        description: "User directory"
+        columns:
+          - name: ID
+            description: "User unique identifier"
+          - name: ORGANIZATION_ID
+            description: "FK to organization"
+          - name: NAME
+          - name: EMAIL
+          - name: STATUS
+          - name: IS_DEACTIVATED
+      
+      - name: PYLON_ORGANIZATIONS
+        description: "Organization master data"
+        columns:
+          - name: ID
+            description: "Organization unique identifier"
+          - name: NAME
+          - name: DOMAIN
+          - name: CREATED_AT
+
+  - name: salesforce
+    description: "Salesforce account data"
+    database: ANALYTICS_DB
+    schema: SALESFORCE
+    tables:
+      - name: ACCOUNTS
+        description: "Salesforce accounts linked to Pylon orgs"
+        columns:
+          - name: ID
+            description: "Salesforce account ID"
+          - name: PYLON_ORGANIZATION_ID__C
+            description: "FK to Pylon org"
+          - name: NAME
+          - name: INDUSTRY
+          - name: SEGMENT__C
+          - name: SEAT_TIER__C
+          - name: CURRENT_ARR__C
+          - name: ANNUALREVENUE

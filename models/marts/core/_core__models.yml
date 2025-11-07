@@ -1,0 +1,56 @@
+version: 2
+
+models:
+  - name: fct_org_daily_activity
+    description: |
+      **Core analytics mart** - One row per organization per day.
+      
+      Aggregates all product events to the org-day level with breakdowns 
+      by feature category (Issue, AI, Frontend, Knowledge Base).
+      
+      Joins with Salesforce for business context (ARR, segment, industry).
+      
+      **Grain:** organization_id, activity_date (one row per org per day)
+      **Refresh:** Daily, incremental
+      **Partition:** activity_date
+      **Cluster:** org_id
+      **Test Coverage:** Grain validation, data quality, business logic
+    
+    columns:
+      - name: org_id
+        description: "Organization unique identifier (PK)"
+        tests:
+          - not_null
+          - unique_combination_of_columns:
+              combination_of_columns:
+                - org_id
+                - activity_date
+      
+      - name: activity_date
+        description: "Date of activity (PK)"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: "dateadd(day, -365, current_date())"
+              max_value: "current_date()"
+      
+      - name: total_event_count
+        description: "Total events on this day"
+        tests:
+          - not_null
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 1000000
+      
+      - name: unique_user_count
+        description: "Distinct users active on this day"
+        tests:
+          - not_null
+      
+      - name: avg_events_per_user
+        description: "Average events per active user"
+        tests:
+          - not_null
+      
+      - name: current_arr
+        description: "Annual Recurring Revenue from Salesforce"

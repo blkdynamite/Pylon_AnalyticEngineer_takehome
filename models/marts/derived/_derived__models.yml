@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: fct_customer_ai_adoption_30d
+    description: |
+      AI value realization metrics for the last 30 days.
+      
+      Computes effective AI adoption score (0-100) combining:
+      - AI feature usage frequency
+      - Percentage of events that are AI-related
+      - User engagement with AI features
+      
+      **Use Case:** Identify customers maximizing AI value (reference-ready, expansion targets)
+    
+    columns:
+      - name: org_id
+        description: "Organization ID (PK)"
+        tests:
+          - unique
+          - not_null
+      
+      - name: effective_adoption_score
+        description: "Composite AI adoption score (0-100)"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      
+      - name: adoption_tier
+        description: "Champion, Adopter, Growing, or At-Risk"
+        tests:
+          - accepted_values:
+              values: ['Champion', 'Adopter', 'Growing', 'At-Risk']
+
+  - name: fct_reference_readiness_30d
+    description: |
+      Customer qualification for reference programs.
+      
+      Computes health score and reference readiness score combining:
+      - Usage patterns
+      - User engagement
+      - Account size and tenure
+      - Business metrics
+      
+      **Use Case:** Identify customers for case studies, testimonials, advisory boards
+    
+    columns:
+      - name: org_id
+        description: "Organization ID (PK)"
+        tests:
+          - unique
+          - not_null
+      
+      - name: health_score
+        description: "Overall health (0-100)"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      
+      - name: reference_readiness_score
+        description: "Reference program readiness (0-100)"
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: 0
+              max_value: 100
+      
+      - name: reference_tier
+        description: "Tier 1, Tier 2, Tier 3, or Not Ready"
+        tests:
+          - accepted_values:
+              values: ['Tier 1', 'Tier 2', 'Tier 3', 'Not Ready']

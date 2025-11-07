@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: stg_product_events
+    description: |
+      Staging layer for product events. Deduplicates raw events, 
+      classifies event types, and resolves organization IDs.
+      
+      **Grain:** One row per event (deduplicated)
+      **Source:** airbyte.PRODUCT_EVENTS
+      **Refresh:** Daily, incremental
+    
+    columns:
+      - name: uuid
+        description: "Unique event ID (primary key)"
+        tests:
+          - unique
+          - not_null
+      
+      - name: event
+        description: "Event name (issue:click, ai_response:generated, etc.)"
+        tests:
+          - not_null
+      
+      - name: distinct_id
+        description: "User ID or org ID"
+      
+      - name: activity_date
+        description: "Date of event (DATE type)"
+        tests:
+          - not_null
+      
+      - name: org_id_direct
+        description: "Organization ID extracted from org-prefixed distinct_id"
+      
+      - name: event_source
+        description: "system_level or user_level"
+        tests:
+          - accepted_values:
+              values: ['system_level', 'user_level']
+      
+      - name: event_category
+        description: "Classified category (Issue Management, AI Features, etc.)"
+        tests:
+          - accepted_values:
+              values: ['Issue Management', 'AI Features', 'Frontend/Navigation', 'Knowledge Base', 'Other']
+
+  - name: stg_pylon_users
+    description: "User dimension with minimal transformations"
+    columns:
+      - name: user_id
+        description: "User unique identifier (PK)"
+        tests:
+          - unique
+          - not_null
+      - name: organization_id
+        description: "FK to organization"
+
+  - name: stg_pylon_organizations
+    description: "Organization dimension"
+    columns:
+      - name: org_id
+        description: "Organization unique identifier (PK)"
+        tests:
+          - unique
+          - not_null
